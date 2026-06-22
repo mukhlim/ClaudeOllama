@@ -1,0 +1,12 @@
+{
+  "OLLAMA_API_KEY": "sk-ollama-xxxxxxxxxxxxxxxx",
+  "ANTHROPIC_BASE_URL": "https://ollama.com",
+  "ANTHROPIC_MODEL": "glm-5.2:cloud",
+  "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.2:cloud",
+  "ANTHROPIC_DEFAULT_SONNET_MODEL": "minimax-m3:cloud",
+  "ANTHROPIC_DEFAULT_HAIKU_MODEL": "kimi-k2.7-code:cloud",
+  "CLAUDE_CODE_SUBAGENT_MODEL": "minimax-m3:cloud",
+  "CLAUDE_CODE_MAX_CONTEXT_TOKENS": 262144,
+  "CLAUDE_CODE_MAX_OUTPUT_TOKENS": 131072,
+  "TERMINAL": "windows_terminal"
+}

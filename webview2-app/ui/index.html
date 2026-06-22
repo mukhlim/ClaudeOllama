@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude + Ollama Cloud Launcher</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Claude + Ollama Cloud Launcher</h1>
+            <p class="subtitle">GUI Wrapper untuk Claude Code dengan Backend Ollama Cloud</p>
+        </header>
+
+        <div class="main-layout">
+            <!-- Left side: tabs + content -->
+            <div class="left-pane">
+                <nav class="tabs">
+                    <button class="tab-btn active" data-tab="workspace" onclick="switchTab('workspace')">Workspace</button>
+                    <button class="tab-btn" data-tab="config" onclick="switchTab('config')">Konfigurasi</button>
+                    <button class="tab-btn" data-tab="status" onclick="switchTab('status')">Env Status</button>
+                    <button class="tab-btn" data-tab="log" onclick="switchTab('log')">Log</button>
+                </nav>
+
+                <div class="tab-content">
+                    <!-- Tab: Workspace -->
+                    <section id="tab-workspace" class="tab-panel active">
+                        <div class="panel">
+                            <h2>Workspace</h2>
+                            <div class="form-group wide">
+                                <label for="workspace-path">Current Workspace Path</label>
+                                <div class="input-with-btn">
+                                    <input type="text" id="workspace-path" />
+                                    <button type="button" class="browse-btn" onclick="browseWorkspaceFolder()">Browse...</button>
+                                </div>
+                            </div>
+                            <h3 class="workspace-subtitle">Recent Workspaces</h3>
+                            <ul id="workspace-list" class="workspace-list"></ul>
+                            <div class="btn-row">
+                                <button onclick="addWorkspaceFromInput()">Add Path</button>
+                                <button onclick="refreshWorkspaces()">Refresh</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tab: Konfigurasi -->
+                    <section id="tab-config" class="tab-panel">
+                        <div class="panel">
+                            <div class="form-grid">
+                        <div class="form-group wide">
+                            <label for="api-key">Ollama API Key <span id="key-hint" class="hint"></span></label>
+                            <div class="input-with-toggle">
+                                <input type="password" id="api-key" placeholder="sk-ollama-xxxxxxxxxxxxxxxx" />
+                                <button type="button" class="eye-btn" id="eye-btn" onclick="toggleKeyVisibility()" title="Toggle visibility">
+                                    <svg id="eye-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                                <div class="form-group wide">
+                                    <label for="base-url">Anthropic Base URL</label>
+                                    <input type="text" id="base-url" placeholder="https://ollama.com" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="model-default">Default Model</label>
+                                    <input type="text" id="model-default" placeholder="glm-5.2:cloud" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="model-opus">Opus Model</label>
+                                    <input type="text" id="model-opus" placeholder="glm-5.2:cloud" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="model-sonnet">Sonnet Model</label>
+                                    <input type="text" id="model-sonnet" placeholder="minimax-m3:cloud" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="model-haiku">Haiku Model</label>
+                                    <input type="text" id="model-haiku" placeholder="kimi-k2.7-code:cloud" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="model-subagent">Subagent Model</label>
+                                    <input type="text" id="model-subagent" placeholder="minimax-m3:cloud" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="max-context">Max Context Tokens</label>
+                                    <input type="number" id="max-context" placeholder="262144" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="max-output">Max Output Tokens</label>
+                                    <input type="number" id="max-output" placeholder="131072" />
+                                </div>
+                            </div>
+
+                            <div class="btn-row">
+                                <button onclick="saveConfig()">Save Config</button>
+                                <button onclick="loadConfig()">Reload Config</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tab: Environment Status -->
+                    <section id="tab-status" class="tab-panel">
+                        <div class="panel">
+                            <h2>Environment Status <button class="small" onclick="checkStatus()">Refresh</button></h2>
+                            <div class="table-wrap">
+                                <table id="env-table">
+                                    <thead>
+                                        <tr><th>Variable</th><th>Value</th></tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Tab: Log -->
+                    <section id="tab-log" class="tab-panel">
+                        <div class="panel log-panel">
+                            <h2>Log <button class="small" onclick="clearLog()">Clear</button></h2>
+                            <textarea id="log" readonly></textarea>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Right side: Actions panel -->
+            <aside class="right-pane">
+                <div class="panel panel-actions">
+                    <h2>Actions</h2>
+                    <div class="form-group terminal-group">
+                        <label for="terminal">Terminal Launcher (Default: Windows Terminal Admin)</label>
+                        <select id="terminal">
+                            <option value="windows_terminal" selected>Windows Terminal (Admin, default)</option>
+                            <option value="auto">Auto (Windows Terminal Admin / Hyper / Warp / PowerShell)</option>
+                            <option value="hyper">Hyper</option>
+                            <option value="warp">Warp</option>
+                            <option value="powershell">PowerShell</option>
+                        </select>
+                    </div>
+                    <div class="btn-row actions">
+                        <button class="primary" onclick="launchClaude()">Launch Claude Code</button>
+                        <button onclick="skipOnboarding()">Skip Onboarding</button>
+                        <button class="warning" onclick="enableGlobal()">Enable Global Env</button>
+                        <button class="danger" onclick="disableGlobal()">Disable Global Env</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
