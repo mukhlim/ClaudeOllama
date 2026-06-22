@@ -25,6 +25,11 @@ import ctypes
 import threading
 from pathlib import Path
 
+try:
+    from _version import APP_VERSION
+except ImportError:
+    APP_VERSION = "0.0.0.0"
+
 # Deteksi apakah running dari PyInstaller bundle
 if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
     _BUNDLE_DIR = Path(sys._MEIPASS)
@@ -780,6 +785,10 @@ def _build_claude_command(env):
 
 class Api:
     """API class yang diekspose ke JavaScript frontend via pywebview."""
+
+    def get_version(self):
+        """Kembalikan versi aplikasi (format yy.m.d.seri)."""
+        return APP_VERSION
 
     def load_config(self):
         cfg = _load_config_raw()

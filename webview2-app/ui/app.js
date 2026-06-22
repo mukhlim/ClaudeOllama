@@ -1,10 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
     waitForPywebview(() => {
+        loadVersion();
         loadConfig();
         loadWorkspaces();
         checkStatus();
     });
 });
+
+async function loadVersion() {
+    try {
+        const version = await callPy("get_version");
+        const el = document.querySelector("#app-version");
+        if (el) el.textContent = "v" + version;
+    } catch (e) {
+        // Versi opsional, jangan ganggu fungsi lain
+    }
+}
 
 const FIELD_IDS = {
     api_key: "api-key",

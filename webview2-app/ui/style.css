@@ -59,6 +59,81 @@ header h1 {
     font-size: 12px;
 }
 
+.app-version {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 7px;
+    background: var(--surface-light);
+    color: var(--success);
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    vertical-align: middle;
+}
+
+.app-version {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    background: var(--surface-light);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+}
+
+.app-version {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 6px;
+    background: var(--surface-light);
+    color: var(--success);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.app-version {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 6px;
+    border: 1px solid var(--surface-light);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.app-version {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    background: var(--surface-light);
+    color: var(--success);
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.app-version {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    background: var(--surface);
+    color: var(--accent);
+    border: 1px solid var(--surface-light);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
 /* Main layout: left tabs + right actions */
 .main-layout {
     display: flex;

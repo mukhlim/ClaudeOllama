@@ -7,6 +7,10 @@ block_cipher = None
 APP_DIR = Path(SPECPATH) / "webview2-app"
 REPO_DIR = Path(SPECPATH)
 
+# Version file untuk Windows VS_VERSION_INFO resource
+_version_file = REPO_DIR / "version_info.txt"
+version_file_str = str(_version_file) if _version_file.exists() else None
+
 a = Analysis(
     [str(APP_DIR / "main.py")],
     pathex=[str(APP_DIR)],
@@ -14,6 +18,7 @@ a = Analysis(
     datas=[
         (str(APP_DIR / "ui"), "ui"),
         (str(REPO_DIR / "config.json"), "."),
+        (str(APP_DIR / "_version.py"), "."),
     ],
     hiddenimports=[
         "webview",
@@ -64,4 +69,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=str(REPO_DIR / "comment.ico"),
+    version=version_file_str,
 )

@@ -2,6 +2,15 @@
 :: Build script untuk compile WebView2 App jadi .exe dengan PyInstaller
 :: Jalankan dari root folder repo
 
+echo [Build] Bumping version...
+python bump_version.py
+if errorlevel 1 (
+    echo.
+    echo [ERROR] bump_version.py failed!
+    pause
+    exit /b 1
+)
+
 echo [Build] Cleaning previous build...
 if exist "dist" rmdir /s /q "dist"
 if exist "build" rmdir /s /q "build"
